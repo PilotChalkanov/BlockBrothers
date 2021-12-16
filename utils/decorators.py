@@ -23,7 +23,8 @@ def permission_required(permission):
     def wrapper(func):
         def decorated_func(*args, **kwargs):
             user = auth.current_user()
-            if not user.role == permission:
+            role = user.role
+            if not role == permission:
                 raise Forbidden("You do not have access to this resource")
             return func(*args, **kwargs)
 

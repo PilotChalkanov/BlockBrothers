@@ -7,10 +7,10 @@ from werkzeug.exceptions import BadRequest
 from models.users import HomeOwnerModel, UserModel, HomeOwnerManagerModel, AdministratorModel
 
 mapper = {
-    UserModel: lambda x: UserModel.query.filter_by(id=x),
-    HomeOwnerModel: lambda x: HomeOwnerModel.query.filter_by(id=x),
-    HomeOwnerManagerModel: lambda x: HomeOwnerManagerModel.query.filter_by(id=x),
-    AdministratorModel: lambda x: AdministratorModel.query.filter_by(id=x)
+    "UserModel": lambda x: UserModel.query.filter_by(id=x).first(),
+    "HomeOwnerModel": lambda x: HomeOwnerModel.query.filter_by(id=x).first(),
+    "HomeOwnerManagerModel": lambda x: HomeOwnerManagerModel.query.filter_by(id=x).first(),
+    "AdministratorModel": lambda x: AdministratorModel().query.filter_by(id=x).first(),
 }
 
 class JWT_key_time:

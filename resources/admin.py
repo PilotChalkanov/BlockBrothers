@@ -1,12 +1,26 @@
 from flask_restful import Resource
 from flask import request
+from werkzeug.security import check_password_hash
 
-from managers.auth import auth
-from managers.home_owner_managers import  HomeOwnerManager
+from managers.auth import auth, AuthManager
+from managers.user_manager import HomeOwnerManager, AdminManager
 from models import RoleType
-from schemas.request.user import HomeOwnerRequestSchema
+from schemas.request.user import HomeOwnerRequestSchema, AdminRequestSchema
 from utils.decorators import permission_required, validate_schema
 
+class CreateAdmin(Resource):
+    @auth.login_required
+    @permission_required(RoleType.admin)
+    @validate_schema(AdminRequestSchema)
+    def post(self):
+        admin = AdminManager.create_admin(request.get_json())
+        return 201
+
+class LoginAdmin(Resource):
+    @validate_schema(AdminRequestSchema)
+    def post(self):
+        admin_token = AdminManager.login(request.get_json())
+        return {"token": admin_token}, 200
 
 class CreateHomeOwner(Resource):
     @auth.login_required

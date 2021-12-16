@@ -2,13 +2,16 @@ from werkzeug.exceptions import NotFound
 
 from db import db
 from managers.auth import auth
+from models import UserModel
 from models.maintenance_event import MaintenanceEventModel
 
 
 class MaintanaceEventManager:
 
     @staticmethod
-    def get_all():
+    def get_all(user):
+        if isinstance(user, UserModel):
+            return MaintenanceEventModel.query.filter_by(home_owner_id=user.id).all()
         return MaintenanceEventModel.query.all()
 
     @staticmethod
