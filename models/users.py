@@ -23,6 +23,7 @@ class UserModel(BaseUserModel):
 class HomeOwnerModel(BaseUserModel):
     __tablename__ = "home_owner"
 
+    bank_details = db.Column(db.String(16), nullable=False)
     role = db.Column(db.Enum(RoleType), default=RoleType.home_owner, nullable=False)
 
 

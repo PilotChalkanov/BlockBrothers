@@ -90,6 +90,7 @@ class HomeOwnerManager:
         home_owner = HomeOwnerModel(**data)
         try:
             db.session.add(home_owner)
+            db.session.commit()
             db.session.flush()
         except Exception as ex:
             raise BadRequest(str(ex))
@@ -107,6 +108,7 @@ class HomeOwnerManager:
         home_owner_manager = HomeOwnerManagerModel(**data)
         try:
             db.session.add(home_owner_manager)
+            db.session.commit()
             db.session.flush()
         except Exception as ex:
             raise BadRequest(str(ex))

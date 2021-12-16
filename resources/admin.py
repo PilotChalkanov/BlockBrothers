@@ -5,7 +5,7 @@ from werkzeug.security import check_password_hash
 from managers.auth import auth, AuthManager
 from managers.user_manager import HomeOwnerManager, AdminManager
 from models import RoleType
-from schemas.request.user import HomeOwnerRequestSchema, AdminRequestSchema
+from schemas.request.user import HomeOwnerRequestSchema, AdminLoginRequestSchema, AdminRequestSchema
 from utils.decorators import permission_required, validate_schema
 
 class CreateAdmin(Resource):
@@ -17,7 +17,7 @@ class CreateAdmin(Resource):
         return 201
 
 class LoginAdmin(Resource):
-    @validate_schema(AdminRequestSchema)
+    @validate_schema(AdminLoginRequestSchema)
     def post(self):
         admin_token = AdminManager.login(request.get_json())
         return {"token": admin_token}, 200
