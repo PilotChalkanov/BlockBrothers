@@ -30,7 +30,7 @@ class MaintanaceEventManager:
             raise NotFound("Maintenance event doesn't exist!")
         user = auth.current_user()
 
-        if not user.id == maint_event.maint_event_id:
+        if not user.id == maint_event.home_owner_id:
             raise NotFound("Maintenance event doesn't exist!")
 
         maint_event_q.update(maint_event_data)
