@@ -12,21 +12,27 @@ from utils.decorators import validate_schema, permission_required
 
 
 class MaintenanceEvent(Resource):
+    @auth.login_required
+    def get(self):
+        user = auth.current_user()
+        # TODO add logic for different roles
+        maint_events = MaintanaceEventManager.get_all(user)
+        schema = MaintenanceEventCreateResponseSchema()
+        return schema.dump(maint_events, many=True)
 
     @auth.login_required
     @permission_required(RoleType.home_owner)
     @validate_schema(MaintenanceEventRequestSchema)
     def post(self):
         current_homeowner = auth.current_user()
-        maint_event = MaintanaceEventManager.create(request.get_json(),current_homeowner.id)
+        maint_event = MaintanaceEventManager.create(
+            request.get_json(), current_homeowner.id
+        )
         schema = MaintenanceEventCreateResponseSchema()
         return schema.dump(maint_event)
 
 
 class MaintenanceEventDetails(Resource):
-    def get(self):
-        pass
-
     @auth.login_required
     @permission_required(RoleType.home_owner)
     @validate_schema(MaintenanceEventRequestSchema)
@@ -38,19 +44,13 @@ class MaintenanceEventDetails(Resource):
     def delete(self):
         pass
 
-class MaintenanceEventDetail(Resource):
-
+class CloseMaintenanceEvent(Resource):
+    @auth.login_required
+    @permission_required(RoleType.home_owner_manager)
     def get(self, id_):
-        pass
+        maintenace_event = MaintanaceEventManager.close(id_)
+        schema = MaintenanceEventCreateResponseSchema()
+        return schema.dump(maintenace_event)
 
-
-class ListAllMaintenanceEvents(Resource):
-    def get(self):
-        #TODO add logic for different roles
-        maint_events = MaintanaceEventManager.get_all()
-        schema = MaintenanceEventResponseSchema()
-        return schema.dump(maint_events, many=True)
-
-
-
-
+class RaiseMaintenanceEvent(Resource):
+    pass

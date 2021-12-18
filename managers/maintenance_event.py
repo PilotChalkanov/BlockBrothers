@@ -2,7 +2,7 @@ from werkzeug.exceptions import NotFound
 
 from db import db
 from managers.auth import auth
-from models import UserModel
+from models import HomeOwnerModel, HomeOwnerManagerModel, AdministratorModel, State
 from models.maintenance_event import MaintenanceEventModel
 
 
@@ -10,8 +10,10 @@ class MaintanaceEventManager:
 
     @staticmethod
     def get_all(user):
-        if isinstance(user, UserModel):
+        if isinstance(user, HomeOwnerModel):
             return MaintenanceEventModel.query.filter_by(home_owner_id=user.id).all()
+        elif isinstance(user, HomeOwnerManagerModel):
+            return MaintenanceEventModel.query.filter_by(status="pending")
         return MaintenanceEventModel.query.all()
 
     @staticmethod
@@ -35,3 +37,19 @@ class MaintanaceEventManager:
 
         maint_event_q.update(maint_event_data)
         return maint_event
+
+    @staticmethod
+    def close(id_):
+        maint_event_q = MaintenanceEventModel.query.filter_by(id=id_)
+        maint_event = maint_event_q.first()
+        if not maint_event:
+            raise NotFound("Maintenance event doesn't exist!")
+        maint_event_q.update({"status" : State.closed})
+
+    @staticmethod
+    def raise_event(id_):
+        maint_event_q = MaintenanceEventModel.query.filter_by(id=id_)
+        maint_event = maint_event_q.first()
+        if not maint_event:
+            raise NotFound("Maintenance event doesn't exist!")
+        #TODO - To sent emails to vendors
