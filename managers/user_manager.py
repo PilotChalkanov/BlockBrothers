@@ -1,4 +1,3 @@
-import algorithm as algorithm
 from psycopg2.errorcodes import UNIQUE_VIOLATION
 from werkzeug.exceptions import BadRequest, InternalServerError
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -125,6 +124,23 @@ class HomeOwnerManager:
             home_owner = HomeOwnerModel.query.filter_by(email=data["email"]).first()
             if home_owner and check_password_hash(home_owner.password, data["password"]):
                 return AuthManager.encode_token(home_owner)
+            raise Exception
+        except Exception:
+            raise BadRequest("Invalid username or password")
+
+    @staticmethod
+    def login_home_owner_manager(data):
+
+        """
+        Checks the email and password (hashes the plain password)
+        :param data: dict -> email, password
+        :return: token
+        """
+
+        try:
+            home_owner_manager = HomeOwnerManagerModel.query.filter_by(email=data["email"]).first()
+            if home_owner_manager and check_password_hash(home_owner_manager.password, data["password"]):
+                return AuthManager.encode_token(home_owner_manager)
             raise Exception
         except Exception:
             raise BadRequest("Invalid username or password")

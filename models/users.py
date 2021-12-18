@@ -31,6 +31,7 @@ class HomeOwnerModel(BaseUserModel):
 
 class HomeOwnerManagerModel(BaseUserModel):
     __tablename__ = "home_owner_manager"
+    bank_details = db.Column(db.String(16), nullable=False)
 
     role = db.Column(
         db.Enum(RoleType), default=RoleType.home_owner_manager, nullable=False
