@@ -37,7 +37,7 @@ class MaintenanceEventDetails(Resource):
     @permission_required(RoleType.home_owner)
     @validate_schema(MaintenanceEventRequestSchema)
     def put(self, id_):
-        updated_maint_event = MaintanaceEventManager.update(request.get_json(), id_)
+        updated_maint_event = MaintanaceEventManager.update_event(request.get_json(), id_)
         schema = MaintenanceEventCreateResponseSchema()
         return schema.dump(updated_maint_event)
 
@@ -45,12 +45,14 @@ class MaintenanceEventDetails(Resource):
         pass
 
 class CloseMaintenanceEvent(Resource):
+
     @auth.login_required
     @permission_required(RoleType.home_owner_manager)
+
     def get(self, id_):
-        maintenace_event = MaintanaceEventManager.close(id_)
+        updated_maint_event = MaintanaceEventManager.close(id_)
         schema = MaintenanceEventCreateResponseSchema()
-        return schema.dump(maintenace_event)
+        return schema.dump(updated_maint_event)
 
 class RaiseMaintenanceEvent(Resource):
     pass

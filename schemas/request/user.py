@@ -22,6 +22,12 @@ class UserRegisterRequestSchema(BaseUserSchema):
 class HomeOwnerRequestSchema(BaseUserSchema):
    bank_details = fields.String(required=True, validate=validate.Length(min=16, max=16))
 
+class HomeOwnerManagerRequestSchema(HomeOwnerRequestSchema):
+   pass
+
+class HomeOwnerManagerLoginRequestSchema(UserLoginRequestSchema):
+   pass
+
 class AdminRequestSchema(BaseUserSchema):
     pass
 class AdminLoginRequestSchema(UserLoginRequestSchema):

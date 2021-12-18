@@ -1,8 +1,7 @@
 from werkzeug.exceptions import NotFound
-
 from db import db
 from managers.auth import auth
-from models import HomeOwnerModel, HomeOwnerManagerModel, AdministratorModel, State
+from models import HomeOwnerModel, HomeOwnerManagerModel, State
 from models.maintenance_event import MaintenanceEventModel
 
 
@@ -25,7 +24,7 @@ class MaintanaceEventManager:
         return maint_event
 
     @staticmethod
-    def update(maint_event_data, id_):
+    def update_event(maint_event_data, id_):
         maint_event_q = MaintenanceEventModel.query.filter_by(id=id_)
         maint_event = maint_event_q.first()
         if not maint_event:
@@ -36,6 +35,8 @@ class MaintanaceEventManager:
             raise NotFound("Maintenance event doesn't exist!")
 
         maint_event_q.update(maint_event_data)
+        db.session.add(maint_event)
+        db.session.commit()
         return maint_event
 
     @staticmethod
@@ -44,7 +45,10 @@ class MaintanaceEventManager:
         maint_event = maint_event_q.first()
         if not maint_event:
             raise NotFound("Maintenance event doesn't exist!")
-        maint_event_q.update({"status" : State.closed})
+        maint_event_q.update({"status": State.closed})
+        db.session.add(maint_event)
+        db.session.commit()
+        return maint_event
 
     @staticmethod
     def raise_event(id_):
