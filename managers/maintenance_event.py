@@ -63,7 +63,6 @@ class MaintanaceEventManager:
         maint_event = MaintanaceEventManager.find_by_id(id_)
         db.session.delete(maint_event)
         db.session.commit()
-        return {"maint_event_id" : id_, "status": "deleted"}
 
     @staticmethod
     def find_by_id( id_):
