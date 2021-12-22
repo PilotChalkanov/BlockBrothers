@@ -1,8 +1,5 @@
-import json
-
 from flask import request
 from flask_restful import Resource
-
 from managers.auth import auth
 from managers.maintenance_event import MaintanaceEventManager
 from models.enum import RoleType
@@ -37,22 +34,27 @@ class MaintenanceEventDetails(Resource):
     @permission_required(RoleType.home_owner)
     @validate_schema(MaintenanceEventRequestSchema)
     def put(self, id_):
-        updated_maint_event = MaintanaceEventManager.update_event(request.get_json(), id_)
+        updated_maint_event = MaintanaceEventManager.update_event(
+            request.get_json(), id_
+        )
         schema = MaintenanceEventCreateResponseSchema()
         return schema.dump(updated_maint_event)
 
-    def delete(self):
-        pass
+    @auth.login_required
+    @permission_required(RoleType.admin)
+    def delete(self, id_):
+        MaintanaceEventManager.delete_event(id_)
+        return {"message": "deleted successfully"}, 204
+
 
 class CloseMaintenanceEvent(Resource):
-
     @auth.login_required
     @permission_required(RoleType.home_owner_manager)
-
     def get(self, id_):
         updated_maint_event = MaintanaceEventManager.close(id_)
         schema = MaintenanceEventCreateResponseSchema()
         return schema.dump(updated_maint_event)
+
 
 class RaiseMaintenanceEvent(Resource):
     pass

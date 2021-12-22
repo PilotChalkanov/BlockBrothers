@@ -1,6 +1,6 @@
 from db import db
 from sqlalchemy import func
-from models.enum import RoleType
+from models.enum import RoleType, PaymentMethodType
 
 
 class BaseUserModel(db.Model):
@@ -20,21 +20,30 @@ class UserModel(BaseUserModel):
     __tablename__ = "users"
 
     role = db.Column(db.Enum(RoleType), default=RoleType.user, nullable=False)
+    payment_method = db.Column(
+        db.Enum(PaymentMethodType), default=PaymentMethodType.card, nullable=False
+    )
+    payment_provider_id = db.Column(db.String(255), nullable=False)
 
 
 class HomeOwnerModel(BaseUserModel):
     __tablename__ = "home_owner"
 
-    bank_details = db.Column(db.String(16), nullable=False)
     role = db.Column(db.Enum(RoleType), default=RoleType.home_owner, nullable=False)
-    maint_events = db.relationship("MaintenanceEventModel", backref="maintenance_event", lazy="dynamic")
+    maint_events = db.relationship(
+        "MaintenanceEventModel", backref="maintenance_event", lazy="dynamic"
+    )
+    payment_provider_id = db.Column(db.String(255), nullable=False)
+
 
 class HomeOwnerManagerModel(BaseUserModel):
     __tablename__ = "home_owner_manager"
-    bank_details = db.Column(db.String(16), nullable=False)
 
     role = db.Column(
         db.Enum(RoleType), default=RoleType.home_owner_manager, nullable=False
+    )
+    stripe_id = db.Column(
+        db.Enum(PaymentMethodType), default=PaymentMethodType.card, nullable=False
     )
 
 

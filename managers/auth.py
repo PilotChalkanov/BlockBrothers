@@ -4,7 +4,12 @@ import jwt
 from decouple import config
 from werkzeug.exceptions import BadRequest
 
-from models.users import HomeOwnerModel, UserModel, HomeOwnerManagerModel, AdministratorModel
+from models.users import (
+    HomeOwnerModel,
+    UserModel,
+    HomeOwnerManagerModel,
+    AdministratorModel,
+)
 
 mapper = {
     "UserModel": lambda x: UserModel.query.filter_by(id=x).first(),
@@ -12,6 +17,7 @@ mapper = {
     "HomeOwnerManagerModel": lambda x: HomeOwnerManagerModel.query.filter_by(id=x).first(),
     "AdministratorModel": lambda x: AdministratorModel().query.filter_by(id=x).first(),
 }
+
 
 class JWT_key_time:
     pass

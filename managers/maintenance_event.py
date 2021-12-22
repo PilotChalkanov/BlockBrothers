@@ -3,10 +3,10 @@ from db import db
 from managers.auth import auth
 from models import HomeOwnerModel, HomeOwnerManagerModel, State
 from models.maintenance_event import MaintenanceEventModel
+from services.stripe_service import StripeService
 
 
 class MaintanaceEventManager:
-
     @staticmethod
     def get_all(user):
         if isinstance(user, HomeOwnerModel):
@@ -41,19 +41,34 @@ class MaintanaceEventManager:
 
     @staticmethod
     def close(id_):
-        maint_event_q = MaintenanceEventModel.query.filter_by(id=id_)
-        maint_event = maint_event_q.first()
-        if not maint_event:
-            raise NotFound("Maintenance event doesn't exist!")
-        maint_event_q.update({"status": State.closed})
+        maint_event = MaintanaceEventManager.find_by_id(id_)
+
+        stripe_service = StripeService()
+        # TODO -> create payment to vendors Account
+        maint_event.status = "closed"
         db.session.add(maint_event)
         db.session.commit()
         return maint_event
 
     @staticmethod
     def raise_event(id_):
+
+        maint_event = MaintanaceEventManager.find_by_id(id_)
+
+        # TODO - To sent emails to vendors
+
+    @staticmethod
+    def delete_event(id_):
+        #TODO ->
+        maint_event = MaintanaceEventManager.find_by_id(id_)
+        db.session.delete(maint_event)
+        db.session.commit()
+        return {"maint_event_id" : id_, "status": "deleted"}
+
+    @staticmethod
+    def find_by_id( id_):
         maint_event_q = MaintenanceEventModel.query.filter_by(id=id_)
         maint_event = maint_event_q.first()
         if not maint_event:
             raise NotFound("Maintenance event doesn't exist!")
-        #TODO - To sent emails to vendors
+        return maint_event

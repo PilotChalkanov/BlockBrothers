@@ -1,6 +1,5 @@
 from flask import request
 from werkzeug.exceptions import BadRequest, Forbidden
-from marshmallow import Schema, validate
 from managers.auth import auth
 
 

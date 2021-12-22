@@ -4,16 +4,22 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from db import db
 from managers.auth import AuthManager
-from models.users import UserModel, HomeOwnerModel, HomeOwnerManagerModel, AdministratorModel
+from models.users import (
+    UserModel,
+    HomeOwnerModel,
+    HomeOwnerManagerModel,
+    AdministratorModel,
+)
+from services.stripe_service import StripeService
 
 
 class AdminManager:
     @staticmethod
     def create_admin(data):
         """
-                Hash the plain password
-                :param data: admin_data: dict
-                :return: user_data
+        Hash the plain password
+        :param data: admin_data: dict
+        :return: user_data
 
         """
 
@@ -29,9 +35,9 @@ class AdminManager:
     @staticmethod
     def login(data):
         """
-            Checks the email and password (hashes the plain password)
-            :param data: dict -> email, password
-            :return: token
+        Checks the email and password (hashes the plain password)
+        :param data: dict -> email, password
+        :return: token
         """
         try:
             admin = AdministratorModel.query.filter_by(email=data["email"]).first()
@@ -40,6 +46,7 @@ class AdminManager:
             raise Exception
         except Exception:
             raise BadRequest("Invalid user name or password!")
+
 
 class UserManager:
     @staticmethod
@@ -54,7 +61,11 @@ class UserManager:
 
         user_data["password"] = generate_password_hash(user_data["password"])
         user = UserModel(**user_data)
+
+        stripe_customer_id = StripeService.create_customer(user)
+        user.payment_provider_id = stripe_customer_id
         db.session.add(user)
+
         try:
             db.session.commit()
         except Exception as ex:
@@ -64,6 +75,8 @@ class UserManager:
                 )
             else:
                 raise InternalServerError("Server is not available")
+
+        # TODO -> create and issue transaction to company account
         return user
 
     @staticmethod
@@ -74,6 +87,7 @@ class UserManager:
         if not check_password_hash(user.password, user_data["password"]):
             raise BadRequest("Invalid user name or password!")
         return user
+
 
 class HomeOwnerManager:
     @staticmethod
@@ -87,6 +101,8 @@ class HomeOwnerManager:
 
         data["password"] = generate_password_hash(data["password"], method="sha256")
         home_owner = HomeOwnerModel(**data)
+        stripe_customer_id = StripeService.create_customer(home_owner)
+        home_owner.payment_provider_id = stripe_customer_id
         try:
             db.session.add(home_owner)
             db.session.commit()
@@ -122,7 +138,9 @@ class HomeOwnerManager:
 
         try:
             home_owner = HomeOwnerModel.query.filter_by(email=data["email"]).first()
-            if home_owner and check_password_hash(home_owner.password, data["password"]):
+            if home_owner and check_password_hash(
+                home_owner.password, data["password"]
+            ):
                 return AuthManager.encode_token(home_owner)
             raise Exception
         except Exception:
@@ -138,10 +156,13 @@ class HomeOwnerManager:
         """
 
         try:
-            home_owner_manager = HomeOwnerManagerModel.query.filter_by(email=data["email"]).first()
-            if home_owner_manager and check_password_hash(home_owner_manager.password, data["password"]):
+            home_owner_manager = HomeOwnerManagerModel.query.filter_by(
+                email=data["email"]
+            ).first()
+            if home_owner_manager and check_password_hash(
+                home_owner_manager.password, data["password"]
+            ):
                 return AuthManager.encode_token(home_owner_manager)
             raise Exception
         except Exception:
             raise BadRequest("Invalid username or password")
-
