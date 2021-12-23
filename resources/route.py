@@ -14,7 +14,6 @@ routes = (
     (AddCard, "/login/add_card"),
     (CreateSubscription, "/login/subscribe"),
     (LoginHomeOwner, "/home_owner/login"),
-
     # (AddCardHomeOwner),"/home_owner/login/add_card",
     (LoginHomeOwnerManager, "/home_owner_manager/login"),
     (MaintenanceEvent, "/home_owners/maint_event"),
@@ -24,6 +23,5 @@ routes = (
     (CreateHomeOwner, "/admin/create_home_owner"),
     (CreateHomeOwnerManager, "/admin/create_home_owner_manager"),
     (CreateAdmin, "/аdmin/create_admin"),
-    (LoginAdmin, "/admin/login")
-    # (RegisterSportsCenter,"/")
+    (LoginAdmin, "/admin/login"),
 )

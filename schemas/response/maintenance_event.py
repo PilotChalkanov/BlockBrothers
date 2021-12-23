@@ -3,6 +3,7 @@ from marshmallow_enum import EnumField
 
 from models.enum import State
 
+
 class MaintenanceEventCreateResponseSchema(Schema):
     id = fields.Integer(requied=True)
     title = fields.String(required=True, validate=validate.Length(max=100))

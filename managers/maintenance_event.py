@@ -20,7 +20,7 @@ class MaintanaceEventManager:
         maint_event_data["home_owner_id"] = home_owner_id
         maint_event = MaintenanceEventModel(**maint_event_data)
         db.session.add(maint_event)
-        db.session.commit()
+        db.session.flush()
         return maint_event
 
     @staticmethod
@@ -36,7 +36,7 @@ class MaintanaceEventManager:
 
         maint_event_q.update(maint_event_data)
         db.session.add(maint_event)
-        db.session.commit()
+        db.session.flush()
         return maint_event
 
     @staticmethod
@@ -47,7 +47,7 @@ class MaintanaceEventManager:
         # TODO -> create payment to vendors Account
         maint_event.status = "closed"
         db.session.add(maint_event)
-        db.session.commit()
+        db.session.flush()
         return maint_event
 
     @staticmethod
@@ -59,13 +59,13 @@ class MaintanaceEventManager:
 
     @staticmethod
     def delete_event(id_):
-        #TODO ->
+        # TODO ->
         maint_event = MaintanaceEventManager.find_by_id(id_)
         db.session.delete(maint_event)
-        db.session.commit()
+        db.session.flush()
 
     @staticmethod
-    def find_by_id( id_):
+    def find_by_id(id_):
         maint_event_q = MaintenanceEventModel.query.filter_by(id=id_)
         maint_event = maint_event_q.first()
         if not maint_event:
