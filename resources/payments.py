@@ -16,7 +16,6 @@ class AddCard(Resource):
         current_user = auth.current_user()
         card_data = request.get_json()
         card = PaymentManager.create_card(current_user, card_data)
-
         return f"Successfully added card number **** **** **** {card.last4}"
 
 

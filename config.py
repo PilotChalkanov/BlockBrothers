@@ -5,7 +5,7 @@ from flask_restful import Api
 
 from db import db
 from resources.route import routes
-hhh
+
 
 class DevApplication:
 
