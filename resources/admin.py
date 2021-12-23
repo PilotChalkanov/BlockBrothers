@@ -2,7 +2,8 @@ from flask import request
 from flask_restful import Resource
 
 from managers.auth import auth
-from managers.user_manager import HomeOwnerManager, AdminManager
+from managers.home_owner_manager import HomeOwnerManager
+from managers.admin_manager import AdminManager
 from models import RoleType
 from schemas.request.user import (
     HomeOwnerRequestSchema,

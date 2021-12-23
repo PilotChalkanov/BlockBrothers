@@ -2,7 +2,8 @@ from flask import request
 from flask_restful import Resource
 
 from managers.auth import AuthManager
-from managers.user_manager import UserManager, HomeOwnerManager
+from managers.user_manager import UserManager
+from managers.home_owner_manager import HomeOwnerManager
 from schemas.request.user import (
     UserRegisterRequestSchema,
     UserLoginRequestSchema,

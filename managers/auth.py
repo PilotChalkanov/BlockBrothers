@@ -14,7 +14,9 @@ from models.users import (
 mapper = {
     "UserModel": lambda x: UserModel.query.filter_by(id=x).first(),
     "HomeOwnerModel": lambda x: HomeOwnerModel.query.filter_by(id=x).first(),
-    "HomeOwnerManagerModel": lambda x: HomeOwnerManagerModel.query.filter_by(id=x).first(),
+    "HomeOwnerManagerModel": lambda x: HomeOwnerManagerModel.query.filter_by(
+        id=x
+    ).first(),
     "AdministratorModel": lambda x: AdministratorModel().query.filter_by(id=x).first(),
 }
 
