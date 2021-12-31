@@ -44,7 +44,8 @@ class AuthManager:
             raise BadRequest("Token has expired")
         except jwt.InvalidSignatureError:
             raise BadRequest("Invalid token")
-
+        except jwt.DecodeError:
+            raise BadRequest("Invalid token")
 
 auth = HTTPTokenAuth(scheme="Bearer")
 

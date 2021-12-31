@@ -7,6 +7,7 @@ def is_card_number_length_valid(value):
     if len(value.replace(" ", "")) != 16:
         raise ValidationError("Not a valid card number.")
 
+
 class CreateCardRequestSchema(Schema):
 
     number = fields.String(required=True, validate=is_card_number_length_valid)

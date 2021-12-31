@@ -59,7 +59,7 @@ class MaintanaceEventManager:
 
     @staticmethod
     def delete_event(id_):
-        # TODO ->
+
         maint_event = MaintanaceEventManager.find_by_id(id_)
         db.session.delete(maint_event)
         db.session.flush()

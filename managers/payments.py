@@ -5,6 +5,8 @@ from models import SubscriptionModel
 from services.stripe_service import StripeService
 
 stripe_service = StripeService()
+
+
 class PaymentManager:
     @staticmethod
     def create_card(user, card_data):

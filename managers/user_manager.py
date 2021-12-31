@@ -10,6 +10,7 @@ from services.stripe_service import StripeService
 
 stripe_service = StripeService()
 
+
 class UserManager:
     @staticmethod
     def register(user_data):
@@ -24,6 +25,7 @@ class UserManager:
         user_data["password"] = generate_password_hash(user_data["password"])
         user = UserModel(**user_data)
 
+        # creating a stripe account
         stripe_customer_id = stripe_service.create_customer(user)
         user.payment_provider_id = stripe_customer_id
         try:

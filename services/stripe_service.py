@@ -3,12 +3,11 @@ from decouple import config
 from stripe.error import AuthenticationError, APIConnectionError, CardError
 from werkzeug.exceptions import ServiceUnavailable, BadRequest
 
-"""
-Singleton class for the payment service
-"""
-
 
 class StripeService:
+    """
+    Singleton class for the payment service
+    """
 
     _instances = {}
 
