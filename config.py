@@ -7,7 +7,7 @@ from db import db
 from resources.route import routes
 
 
-class DevApplication:
+class DevApplicationConfiguration:
 
     DEBUG = True
     TESTING = True
@@ -16,7 +16,8 @@ class DevApplication:
         f"@localhost:{config('DB_PORT')}/{config('DB_NAME')}"
     )
 
-class TestApplication:
+
+class TestApplicationConfiguration:
 
     DEBUG = True
     TESTING = True
@@ -25,9 +26,13 @@ class TestApplication:
         f"@localhost:{config('DB_PORT')}/{config('TEST_DB_NAME')}"
     )
 
-def create_app(config = "config.DevApplication"):
+
+def create_app(
+    config="config.DevApplicationConfiguration",
+):
     app = Flask(__name__)
-    app.config.from_object(DevApplication)
+    db.init_app(app)
+    app.config.from_object(config)
     migrate = Migrate(app, db)
     api = Api(app)
     [api.add_resource(*r) for r in routes]

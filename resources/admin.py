@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
 
-from managers.auth import auth
+from managers.auth import auth, AuthManager
 from managers.home_owner_manager import HomeOwnerManager
 from managers.admin_manager import AdminManager
 from models import RoleType
@@ -16,8 +16,8 @@ from utils.decorators import permission_required, validate_schema
 
 
 class CreateAdmin(Resource):
-    @auth.login_required
-    @permission_required(RoleType.admin)
+    # @auth.login_required
+    # @permission_required(RoleType.admin)
     @validate_schema(AdminRequestSchema)
     def post(self):
         admin = AdminManager.create_admin(request.get_json())
@@ -44,7 +44,8 @@ class CreateHomeOwner(Resource):
     @validate_schema(HomeOwnerRequestSchema)
     def post(self):
         home_owner = HomeOwnerManager.create_home_owner(request.get_json())
-        return 201
+        token = AuthManager.encode_token(home_owner)
+        return {"token": token, "stripe_id": home_owner.payment_provider_id}
 
 
 class CreateHomeOwnerManager(Resource):

@@ -47,6 +47,7 @@ class AuthManager:
         except jwt.DecodeError:
             raise BadRequest("Invalid token")
 
+
 auth = HTTPTokenAuth(scheme="Bearer")
 
 

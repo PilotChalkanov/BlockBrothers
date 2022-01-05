@@ -1,3 +1,5 @@
+import json
+
 from flask import request
 from flask_restful import Resource
 from managers.auth import auth
@@ -26,7 +28,7 @@ class MaintenanceEvent(Resource):
             request.get_json(), current_homeowner.id
         )
         schema = MaintenanceEventCreateResponseSchema()
-        return schema.dump(maint_event)
+        return schema.dump(maint_event), 201
 
 
 class MaintenanceEventDetails(Resource):
@@ -50,10 +52,10 @@ class MaintenanceEventDetails(Resource):
 class CloseMaintenanceEvent(Resource):
     @auth.login_required
     @permission_required(RoleType.home_owner_manager)
-    def get(self, id_):
+    def put(self, id_):
         updated_maint_event = MaintanaceEventManager.close(id_)
-        schema = MaintenanceEventCreateResponseSchema()
-        return schema.dump(updated_maint_event)
+
+        return {"status": updated_maint_event.status}
 
 
 class RaiseMaintenanceEvent(Resource):

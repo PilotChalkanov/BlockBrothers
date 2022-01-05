@@ -6,6 +6,8 @@ from managers.auth import AuthManager
 from models import HomeOwnerModel, HomeOwnerManagerModel
 from services.stripe_service import StripeService
 
+stripe_service = StripeService()
+
 
 class HomeOwnerManager:
     @staticmethod
@@ -19,13 +21,14 @@ class HomeOwnerManager:
 
         data["password"] = generate_password_hash(data["password"], method="sha256")
         home_owner = HomeOwnerModel(**data)
-        stripe_customer_id = StripeService.create_customer(home_owner)
+        stripe_customer_id = stripe_service.create_customer(home_owner)
         home_owner.payment_provider_id = stripe_customer_id
         try:
             db.session.add(home_owner)
             db.session.flush()
         except Exception as ex:
             raise BadRequest(str(ex))
+        return home_owner
 
     @staticmethod
     def create_home_owner_manager(data):

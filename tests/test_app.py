@@ -8,7 +8,7 @@ from db import db
 
 class TestApp(TestCase):
     def create_app(self):
-        return create_app("config.TestApplication")
+        return create_app("config.TestApplicationConfiguration")
 
     def setUp(self):
         db.init_app(self.app)
@@ -19,7 +19,7 @@ class TestApp(TestCase):
         db.drop_all()
 
     def test_protected_endpoints_without_token_or_with_invalid_token(self):
-        for method, url in  [
+        for method, url in [
             ("POST", "/аdmin/create_admin"),
             ("POST", "/admin/create_home_owner"),
             ("POST", "/admin/create_home_owner_manager"),
@@ -27,7 +27,6 @@ class TestApp(TestCase):
             ("POST", "/login/add_card"),
             ("DELETE", "/home_owners/maint_event/1"),
             ("PUT", "/home_owners/maint_event/1"),
-
         ]:
             if method == "POST":
                 resp = self.client.post(url, data=json.dumps({}))
@@ -37,7 +36,4 @@ class TestApp(TestCase):
                 resp = self.client.put(url, data=json.dumps({}))
             else:
                 resp = self.client.delete(url)
-            self.assert400(resp, {'message': 'Invalid token'})
-
-
-
+            self.assert400(resp, {"message": "Invalid token"})

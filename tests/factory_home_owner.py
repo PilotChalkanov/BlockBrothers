@@ -3,7 +3,7 @@ from random import randint
 
 import factory
 
-from models import MaintenanceEventModel, RoleType
+from models import MaintenanceEventModel, RoleType, PaymentMethodType, HomeOwnerModel
 from resources.maintenance_event import MaintenanceEvent
 
 
@@ -16,9 +16,9 @@ class BaseFactory(factory.Factory):
         return object
 
 
-class UserFactory(BaseFactory):
+class HomeOwnerFactory(BaseFactory):
     class Meta:
-        model = MaintenanceEventModel
+        model = HomeOwnerModel
 
     id = factory.Sequence(lambda n: n)
     first_name = factory.Faker("first_name")
@@ -26,6 +26,5 @@ class UserFactory(BaseFactory):
     email = factory.Faker("email")
     phone = str(randint(100000, 200000))
     password = factory.Faker("password")
-    role = RoleType.complainer
-    payment_method = factory.Faker("iban")
-    payment_provider_id = factory.Faker("card007")
+    role = RoleType.home_owner
+    payment_provider_id = str(randint(100000, 200000))

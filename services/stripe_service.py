@@ -27,7 +27,7 @@ class StripeService:
                 description="simple_user",
                 phone=user.phone,
             )
-            print(customer)
+
             return customer.id
         except AuthenticationError as e:
             raise BadRequest(str(e))

@@ -4,11 +4,11 @@ from flask_testing import TestCase
 
 from config import create_app
 from db import db
-from models import UserModel
+from models import HomeOwnerModel
 from tests.helpers import object_as_dict
 
 
-class TestAuth(TestCase):
+class TestApp(TestCase):
     def create_app(self):
         self.headers = {"Content-Type": "application/json"}
         return create_app("config.TestApplicationConfiguration")
@@ -21,12 +21,12 @@ class TestAuth(TestCase):
         db.session.remove()
         db.drop_all()
 
-    def test_register(self):
+    def test_create_home_owner(self):
         """
         Test when register a user, if it is written in the database
         Assure that the role is a User role
         """
-        url = "/register"
+        url = "/admin/create_home_owner"
 
         data = {
             "first_name": "Test",
@@ -36,7 +36,7 @@ class TestAuth(TestCase):
             "phone": "1234567891011",
         }
 
-        users = UserModel.query.all()
+        users = HomeOwnerModel.query.all()
         assert len(users) == 0
 
         resp = self.client.post(url, data=json.dumps(data), headers=self.headers)
@@ -44,7 +44,7 @@ class TestAuth(TestCase):
         assert resp.status_code == 201
         assert "token" in resp.json
 
-        users = UserModel.query.all()
+        users = HomeOwnerModel.query.all()
         assert len(users) == 1
         user = object_as_dict(users[0])
         user.pop("password")

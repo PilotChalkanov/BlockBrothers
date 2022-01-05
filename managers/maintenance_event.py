@@ -42,8 +42,6 @@ class MaintanaceEventManager:
     @staticmethod
     def close(id_):
         maint_event = MaintanaceEventManager.find_by_id(id_)
-
-        stripe_service = StripeService()
         # TODO -> create payment to vendors Account
         maint_event.status = "closed"
         db.session.add(maint_event)
