@@ -1,8 +1,9 @@
 # Block Brothers
 REST API Application
-Back-end restfull application for managing co-living complex with a common sports-center. The regular users have access only to sports-center and
-corresponding application. Home owners are owners of property inside the complex, they can send reports about broken things in the area of the complex. 
-Admin roles are home owner managers and admin. It uses stripe payment service for payment and subscriptions to monthly taxation and sports-center membership.
+
+Back-end restfull application for managing co-living complex area with a common sports-center. Regular users have access only to sports-center and
+corresponding application. Home owners are owners of a property inside the complex, they can send reports about broken things in the area of the complex. 
+Admin roles are home owner managers and admin. The application uses stripe payment service for payment and subscriptions to monthly taxation and sports-center membership.
 
 
 
@@ -78,7 +79,7 @@ The REST API app is described below.
 `POST /create_admin/`
 
     curl -X POST http://127.0.0.1:5000/admin/create_admin \
-      -H "Authorization: Bearer <JWT token>"
+      -H "Authorization: Bearer <admin token>"
      -H "Content-Type: application/json" \
      -d {
     "email":"adam@adam.com",
@@ -130,7 +131,7 @@ The REST API app is described below.
 `POST /admin/create_home_owner`
 
     curl -X POST http://127.0.0.1:5000/admin/create_home_owner \     
-     -H "Authorization: Bearer <JWT token>"
+     -H "Authorization: Bearer <admin token>"
      -H "Content-Type: application/json" \
      -d {
         "email":"aleko@kaleko.com",
@@ -161,7 +162,7 @@ The REST API app is described below.
 `POST /admin/create_home_owner_manager`
 
     curl -X POST http://127.0.0.1:5000/admin/create_home_owner_manager \ 
-     -H "Authorization: Bearer <JWT token>"
+     -H "Authorization: Bearer <admin token>"
      -H "Content-Type: application/json" \
      -d {
         "email":"krasi@balakov.com",
@@ -186,7 +187,7 @@ The REST API app is described below.
 
 `POST /home_owner/login`
 
-    curl -X POST http://127.0.0.1:5000//home_owner/login \     
+    curl -X POST http://127.0.0.1:5000/home_owner/login \     
      -H "Content-Type: application/json" \
      -d {
       "email":"aleko@kaleko.com",
@@ -203,86 +204,164 @@ The REST API app is described below.
     Content-Length: 197
 
    {
-    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjgsImV4cCI6MTY1MDAyMDA5Miwicm9sZSI6IkhvbWVPd25lck1vZGVsIn0.EspLTC4d8kCU6KU0iPc3exrd5-eCFd8GoLKDEBwtEq4",
-    "stripe_id": "cus_KuLqkT0PJPpXQW"
-    }
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjgsImV4cCI6MTY1MDAyNjI3MSwicm9sZSI6IkhvbWVPd25lck1vZGVsIn0.aQ4j66p6_OSS52MzUCsTqevNLiFPG5vaUnp5pBMRCtE",
+    "role": "homeowner"
+}
 
-## Change a Thing's state
-
-### Request
-
-`PUT /thing/:id/status/changed`
-
-    curl -i -H 'Accept: application/json' -X PUT http://localhost:7000/thing/1/status/changed
-
-### Response
-
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 40
-
-    {"id":1,"name":"Foo","status":"changed"}
-
-## Get changed Thing
+## Login Home Owner Manager
 
 ### Request
 
-`GET /thing/id`
+`POST /home_owner/login`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
-
+    curl -X POST http://127.0.0.1:5000/home_owner_manager/login \     
+     -H "Content-Type: application/json" \
+     -d {
+          "email":"krasi@balakov.com",
+          "password":"123456"
+      }
+      
 ### Response
 
     HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Date: Wed, 05 Jan 2022 10:54:52 GMT
     Status: 200 OK
     Connection: close
     Content-Type: application/json
-    Content-Length: 40
+    Content-Length: 197
 
-    {"id":1,"name":"Foo","status":"changed"}
+   {
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY1MDAyNjU1NSwicm9sZSI6IkhvbWVPd25lck1hbmFnZXJNb2RlbCJ9.diU0zf2Zj-2N3-KOOWrqFEfBI7PV7qRFsKCWW_LhbmA",
+    "role": "homeowner_manager"
+   }
 
-## Change a Thing
+## Add Card
+Add card after a user is logged in. The card is saved with its stripe unique number inside the application database, where the card detailes are saved securely in Stripe Account of the Home Owner Manager. Who is in charge of the facility and all the payments and subscriptions.
 
 ### Request
 
-`PUT /thing/:id`
+`POST /login/add_card`    
 
-    curl -i -H 'Accept: application/json' -X PUT -d 'name=Foo&status=changed2' http://localhost:7000/thing/1
-
+ curl -X POST http://127.0.0.1:5000/login/add_card \     
+  -H "Authorization: Bearer <user token>"\
+  -H "Content-Type: application/json" \
+  
+  {
+    "number" : "4242 4242 4242 4242",
+    "card_holder": "NIKOLAY CHALKANOV",
+    "exp_month": 4,
+    "exp_year": 2022,
+    "cvc": "314"
+   }
+   
 ### Response
 
     HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Date: Wed, 05 Jan 2022 12:50:34 GMT
     Status: 200 OK
     Connection: close
     Content-Type: application/json
-    Content-Length: 41
+    Content-Length: 53
 
-    {"id":1,"name":"Foo","status":"changed2"}
+    "Successfully added card number **** **** **** 4242"
 
-## Attempt to change a Thing using partial params
+## Create maintance event
+   Only home owners can send a report for a maintenace problem of the facility he lives in. 
+   
+   
+### Request
+   
+`POST /home_owners/maint_event`  
+
+ curl -X POST http://127.0.0.1:5000/home_owners/maint_event \     
+  -H "Authorization: Bearer <home owner token>"\
+  -H "Content-Type: application/json" \
+  
+  {
+   "title": "Second floor stairs dirty",
+   "content" : "There is oil spilige on the stairs",
+   "photo_url": "https://www.something.sn"
+   }
+   
+### Response
+
+    HTTP/1.1 201 Created
+    Date: Wed, 05 Jan 2022 12:54:32 GMT
+    Status: 201 Created
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 223
+
+   {
+    "created_on": "2022-01-05T14:54:32.047726",
+    "title": "Second floor stairs dirty",
+    "status": "Pending",
+    "content": "There is oil spilige on the stairs",
+    "updated_on": null,
+    "id": 2,
+    "photo_url": "https://www.something.sn"
+}
+
+## Close maintenance event
+   A maintenace event which is fixed is regarded as closed. The home owner manager has reviewed it and can close it. Changes the status to closed.
 
 ### Request
+   
+`PUT /home_owner_manager/maint_event/<int:id_>/close`  
 
-`PUT /thing/:id`
-
-    curl -i -H 'Accept: application/json' -X PUT -d 'status=changed3' http://localhost:7000/thing/1
-
+ curl -X POST http://127.0.0.1:5000//home_owner_manager/maint_event/<int:id_>/close \     
+  -H "Authorization: Bearer <home owner manager token>"\
+  -H "Content-Type: application/json" \  
+     
 ### Response
 
     HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:32 GMT
+    Date: Wed, 05 Jan 2022 12:54:32 GMT
     Status: 200 OK
     Connection: close
     Content-Type: application/json
-    Content-Length: 41
+    Content-Length: 21
 
-    {"id":1,"name":"Foo","status":"changed3"}
+   {
+      "status": "closed"
+   }
 
+## Update maintenance event
+   
+A maintenace event which is submited already can be updated.
+
+### Request
+   
+`POST /home_owners/maint_event/<int:id>`  
+
+ curl -X POST http://127.0.0.1:5000/home_owners/maint_event/<int:id> \     
+  -H "Authorization: Bearer <home owner token>"\
+  -H "Content-Type: application/json" \
+  -d {
+   "title": "Second floor stairs dirty",
+   "content" : "There is oil spilige on the stairs. Check right next to the elevator.",
+   "photo_url": "https://www.something.sn"
+   }
+     
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Wed, 05 Jan 2022 12:54:32 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 21
+   
+{
+    "photo_url": "https://www.something.sn",
+    "content": "There is oil spilige on the stairs. Check right next to the elevator.",
+    "status": "Closed",
+    "updated_on": "2022-01-05T15:09:10.812224",
+    "title": "Second floor stairs dirty",
+    "created_on": "2022-01-05T14:54:32.047726",
+    "id": 2
+}
+  
 ## Attempt to change a Thing using invalid params
 
 ### Request
