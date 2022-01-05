@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from db import db
 from models import SubscriptionModel
 from services.stripe_service import StripeService

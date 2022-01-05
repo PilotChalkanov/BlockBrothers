@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
-from flask_httpauth import HTTPTokenAuth
+
 import jwt
 from decouple import config
+from flask_httpauth import HTTPTokenAuth
 from werkzeug.exceptions import BadRequest
 
 from models.users import (

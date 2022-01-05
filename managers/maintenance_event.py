@@ -1,9 +1,9 @@
 from werkzeug.exceptions import NotFound
+
 from db import db
 from managers.auth import auth
-from models import HomeOwnerModel, HomeOwnerManagerModel, State
+from models import HomeOwnerModel, HomeOwnerManagerModel
 from models.maintenance_event import MaintenanceEventModel
-from services.stripe_service import StripeService
 
 
 class MaintanaceEventManager:

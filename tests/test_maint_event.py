@@ -5,10 +5,8 @@ from flask_testing import TestCase
 from config import create_app
 from db import db
 from models import MaintenanceEventModel, State
-
 from tests.factory_home_owner import HomeOwnerFactory
 from tests.helpers import generate_token
-from unittest.mock import patch
 
 
 class TestMaintEvent(TestCase):

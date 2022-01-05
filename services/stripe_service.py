@@ -1,7 +1,7 @@
 import stripe
 from decouple import config
 from stripe.error import AuthenticationError, APIConnectionError, CardError
-from werkzeug.exceptions import ServiceUnavailable, BadRequest
+from werkzeug.exceptions import BadRequest
 
 
 class StripeService:

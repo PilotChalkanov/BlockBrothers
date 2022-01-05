@@ -1,7 +1,6 @@
-import json
-
 from flask import request
 from flask_restful import Resource
+
 from managers.auth import auth
 from managers.maintenance_event import MaintanaceEventManager
 from models.enum import RoleType

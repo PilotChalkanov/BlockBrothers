@@ -4,6 +4,8 @@ REST API Application
 Back-end restfull application for managing co-living complex area with a common sports-center. Regular users have access only to sports-center and
 corresponding application. Home owners are owners of a property inside the complex, they can send reports about broken things in the area of the complex. 
 Admin roles are home owner managers and admin. The application uses stripe payment service for payment and subscriptions to monthly taxation and sports-center membership.
+The project can be extended with additional functionality, like adding a car, it can be integrated with WISE/S3 for uploading photos about maintenance events and etc. 
+It has a real life application and customisation for co-living areas and condominiums. It can ease the payments and gathering complex expenses.
 
 
 

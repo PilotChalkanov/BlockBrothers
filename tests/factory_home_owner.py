@@ -1,10 +1,9 @@
-from db import db
 from random import randint
 
 import factory
 
-from models import MaintenanceEventModel, RoleType, PaymentMethodType, HomeOwnerModel
-from resources.maintenance_event import MaintenanceEvent
+from db import db
+from models import RoleType, HomeOwnerModel
 
 
 class BaseFactory(factory.Factory):

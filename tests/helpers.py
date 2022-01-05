@@ -13,3 +13,6 @@ def mock_uuid():
 
 def generate_token(user):
     return AuthManager.encode_token(user)
+
+def mock_stripe_customer():
+    return "111111"
