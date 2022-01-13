@@ -37,5 +37,3 @@ class TestApp(TestCase):
             else:
                 resp = self.client.delete(url)
             self.assert400(resp, {"message": "Invalid token"})
-
-

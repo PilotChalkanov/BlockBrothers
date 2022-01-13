@@ -4,11 +4,9 @@ from flask_testing import TestCase
 
 from config import create_app
 from db import db
-from models import UserModel, HomeOwnerModel, HomeOwnerManagerModel
-from services.stripe_service import StripeService
+from models import HomeOwnerManagerModel
 from tests.factory_users import AdminFactory
 from tests.helpers import object_as_dict, generate_token
-from unittest.mock import patch
 
 
 class TestHomeOwnerManagerRegister(TestCase):
@@ -23,7 +21,6 @@ class TestHomeOwnerManagerRegister(TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
-
 
     def test_register_home_owner(self):
         """
@@ -49,7 +46,6 @@ class TestHomeOwnerManagerRegister(TestCase):
         resp = self.client.post(url, data=json.dumps(data), headers=self.headers)
 
         assert resp.status_code == 200
-
 
         home_owner_managers = HomeOwnerManagerModel.query.all()
         assert len(home_owner_managers) == 1
