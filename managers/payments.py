@@ -18,7 +18,7 @@ class PaymentManager:
         subscription = stripe_service.add_subscription(customer_id, period)
 
         subs = {
-            "provider_subs_id": subscription.id,
+            "provider_subs_id": subscription["id"],
             f"{user.role.value}_id": user.id,
             "type": period,
         }

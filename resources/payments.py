@@ -27,4 +27,4 @@ class CreateSubscription(Resource):
         subscription_data = request.get_json()
         period = subscription_data["type"]
         subscription = PaymentManager.subscribe(current_user, period)
-        return {"subscription_id": subscription.id}
+        return 200
