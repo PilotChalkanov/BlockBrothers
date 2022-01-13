@@ -29,6 +29,12 @@ class JWT_key_time:
 class AuthManager:
     @staticmethod
     def encode_token(user):
+        """
+        Create JWT Token
+        :param data: user_data: dict
+        :return: token
+        """
+
         payload = {
             "sub": user.id,
             "exp": datetime.utcnow() + timedelta(days=int(config("JWT_KEY_EXP"))),

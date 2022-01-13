@@ -26,6 +26,7 @@ class UserManager:
         user = UserModel(**user_data)
 
         # creating a stripe account
+
         stripe_customer_id = stripe_service.create_customer(user)
         user.payment_provider_id = stripe_customer_id
         try:
