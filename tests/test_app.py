@@ -37,3 +37,7 @@ class TestApp(TestCase):
             else:
                 resp = self.client.delete(url)
             self.assert400(resp, {"message": "Invalid token"})
+
+    def test_create_home_owner_with_admin_token(self):
+        url = "admin/create_home_owner"
+        admin = AdminModel

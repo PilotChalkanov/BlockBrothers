@@ -1,4 +1,5 @@
-from werkzeug.exceptions import BadRequest
+from psycopg2.errorcodes import UNIQUE_VIOLATION
+from werkzeug.exceptions import BadRequest, InternalServerError
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from db import db
@@ -27,8 +28,15 @@ class HomeOwnerManager:
             db.session.add(home_owner)
             db.session.flush()
         except Exception as ex:
-            raise BadRequest(str(ex))
+            if ex.orig.pgcode == UNIQUE_VIOLATION:
+                raise BadRequest(
+                    "Username with this email already registered! Please login!"
+                )
+            else:
+                raise InternalServerError("Server is not available")
         return home_owner
+
+
 
     @staticmethod
     def create_home_owner_manager(data):

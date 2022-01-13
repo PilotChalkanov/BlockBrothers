@@ -9,6 +9,8 @@ from schemas.response.maintenance_event import MaintenanceEventCreateResponseSch
 from utils.decorators import validate_schema, permission_required
 
 
+
+
 class MaintenanceEvent(Resource):
     @auth.login_required
     def get(self):
@@ -26,7 +28,7 @@ class MaintenanceEvent(Resource):
         maint_event = MaintanaceEventManager.create(
             request.get_json(), current_homeowner.id
         )
-        schema = MaintenanceEventCreateResponseSchema()
+        schema = MaintenanceEventRequestSchema()
         return schema.dump(maint_event), 201
 
 

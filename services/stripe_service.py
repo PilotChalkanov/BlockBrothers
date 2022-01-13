@@ -57,7 +57,7 @@ class StripeService:
         except CardError as e:
             raise BadRequest(str(e))
 
-    def add_subscription(customer_id, period):
+    def add_subscription(self,customer_id, period):
         try:
             stripe.api_key = config("STRIPE_API_KEY")
             products = {
