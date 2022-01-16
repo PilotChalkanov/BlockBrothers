@@ -266,6 +266,33 @@ Add card after a user is logged in. The card is saved with its stripe unique num
     Content-Length: 53
 
     "Successfully added card number **** **** **** 4242"
+   
+## Subscribe
+Add subscription, with subscription type - enum monthly,yearly after a user is logged in. The subscription is saved with its stripe unique number inside the application database, where the subscription and payment details are saved securely in Stripe Account of the Home Owner Manager. Who is in charge of the facility and all the payments and subscriptions.
+
+### Request
+
+`POST /login/add_card`    
+
+ curl -X POST http://127.0.0.1:5000/login/subscribe \     
+  -H "Authorization: Bearer <user token>"\
+  -H "Content-Type: application/json" \
+  
+  {
+    "type" : "monthly",
+    
+   }
+   
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Wed, 05 Jan 2022 12:50:34 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 4
+
+    200 - OK
 
 ## Create maintance event
    Only home owners can send a report for a maintenace problem of the facility he lives in. 
