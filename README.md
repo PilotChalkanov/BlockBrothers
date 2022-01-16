@@ -15,7 +15,7 @@ It has a real life application and customisation for co-living areas and condomi
 
 ## Run the tests
 
-    
+Run the test suite from the tests folder.    
 
 # REST API
 
