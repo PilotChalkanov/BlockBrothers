@@ -3,7 +3,7 @@ from flask_restful import Resource
 
 from managers.auth import auth
 from managers.maintenance_event import MaintanaceEventManager
-from models.enum import RoleType
+from models.enumerables import RoleType
 from schemas.request.maintenace_event import MaintenanceEventRequestSchema
 from schemas.response.maintenance_event import MaintenanceEventCreateResponseSchema
 from utils.decorators import validate_schema, permission_required

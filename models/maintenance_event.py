@@ -1,7 +1,7 @@
 from sqlalchemy import func
 
 from db import db
-from models.enum import State
+from models.enumerables import State
 
 
 class MaintenanceEventModel(db.Model):

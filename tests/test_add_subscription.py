@@ -26,7 +26,7 @@ class Test_Add_Subscription(TestCase):
         db.drop_all()
 
     @patch.object(StripeService, "add_subscription", return_value={"id":"1111"})
-    def test_add_card_to_user(self, mock_subscription):
+    def test_add_subscription(self, mock_subscription):
         user = UserFactory()
         token = generate_token(user)
 

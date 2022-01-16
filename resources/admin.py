@@ -16,8 +16,8 @@ from utils.decorators import permission_required, validate_schema
 
 
 class CreateAdmin(Resource):
-    # @auth.login_required
-    # @permission_required(RoleType.admin)
+    @auth.login_required
+    @permission_required(RoleType.admin)
     @validate_schema(AdminRequestSchema)
     def post(self):
         admin = AdminManager.create_admin(request.get_json())

@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields, validate
 from marshmallow_enum import EnumField
 
-from models.enum import State
+from models.enumerables import State
 
 
 class MaintenanceEventCreateResponseSchema(Schema):

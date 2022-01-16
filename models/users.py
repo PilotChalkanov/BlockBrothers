@@ -1,6 +1,6 @@
 from db import db
 from sqlalchemy import func
-from models.enum import RoleType, PaymentMethodType
+from models.enumerables import RoleType, PaymentMethodType
 
 
 class BaseUserModel(db.Model):
